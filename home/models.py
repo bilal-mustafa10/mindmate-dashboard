@@ -59,6 +59,18 @@ class HealthAssessment(ClusterableModel):
         return self.title
 
 
+class MentalHealthResource(ClusterableModel):
+    id = models.AutoField(primary_key=True)
+    title = models.CharField(max_length=100)
+    logo = models.ForeignKey(Image, blank=False, on_delete=models.CASCADE, related_name="mental_health_resource_logo")
+    description = models.CharField(max_length=1000, blank=False, null=False)
+    photo = models.ForeignKey(Image, blank=False, on_delete=models.CASCADE, related_name="mental_health_resource_photo")
+    resource_type = models.CharField(max_length=50, blank=False, null=False)
+
+    def __str__(self):
+        return self.title
+
+
 class HealthQuestion(ClusterableModel):
     id = models.AutoField(primary_key=True)
     assessment = models.ForeignKey(HealthAssessment, blank=False, on_delete=models.CASCADE)
