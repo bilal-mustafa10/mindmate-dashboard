@@ -1,13 +1,21 @@
 from django.conf import settings
 from django.urls import include, path
 from django.contrib import admin
+from rest_framework import routers
 
 from wagtail.admin import urls as wagtailadmin_urls
 from wagtail import urls as wagtail_urls
 from wagtail.admin.views import account
 from wagtail.documents import urls as wagtaildocs_urls
 
+from home.views import ActivityViewSet, InspirationViewSet, MentalHealthResourceViewSet, UserViewSet
 from search import views as search_views
+
+api = routers.DefaultRouter()
+api.register(r"user", UserViewSet, basename="user")
+api.register(r"activity", ActivityViewSet, basename="activity")
+api.register(r"inspiration", InspirationViewSet, basename="inspiration")
+api.register(r"resources", MentalHealthResourceViewSet, basename="resources")
 
 urlpatterns = [
     path('', account.LoginView.as_view(), name='homepage'),  # Homepage
@@ -15,6 +23,7 @@ urlpatterns = [
     path("admin/", include(wagtailadmin_urls)),
     path("documents/", include(wagtaildocs_urls)),
     path("search/", search_views.search, name="search"),
+    path("api/", include(api.urls)),
 ]
 
 

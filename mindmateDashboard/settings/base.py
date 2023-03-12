@@ -29,6 +29,7 @@ INSTALLED_APPS = [
     "healthAssessments",
     "mentalHealthResources",
     "selfAffirmations",
+    'rest_framework',
     "wagtail.contrib.modeladmin",
     "wagtail.contrib.forms",
     "wagtail.contrib.redirects",
@@ -158,6 +159,11 @@ WAGTAILSEARCH_BACKENDS = {
     "default": {
         "BACKEND": "wagtail.search.backends.database",
     }
+}
+
+REST_FRAMEWORK = {
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 10
 }
 
 # Base URL to use when referring to full URLs within the Wagtail admin backend -
