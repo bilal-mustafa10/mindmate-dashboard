@@ -8,7 +8,13 @@ from wagtail import urls as wagtail_urls
 from wagtail.admin.views import account
 from wagtail.documents import urls as wagtaildocs_urls
 
-from home.views import ActivityViewSet, InspirationViewSet, MentalHealthResourceViewSet, UserViewSet
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
+
+from home.views import ActivityViewSet, InspirationViewSet, MentalHealthResourceViewSet, UserViewSet, UserHubViewSet, \
+    ImageViewSet, HealthAssessmentViewSet
 from search import views as search_views
 
 api = routers.DefaultRouter()
@@ -16,6 +22,9 @@ api.register(r"user", UserViewSet, basename="user")
 api.register(r"activity", ActivityViewSet, basename="activity")
 api.register(r"inspiration", InspirationViewSet, basename="inspiration")
 api.register(r"resources", MentalHealthResourceViewSet, basename="resources")
+api.register(r"assessments", HealthAssessmentViewSet, basename="assessments")
+api.register(r"hub", UserHubViewSet, basename="userhub")
+api.register(r"images", ImageViewSet, basename="images")
 
 urlpatterns = [
     path('', account.LoginView.as_view(), name='homepage'),  # Homepage
@@ -24,6 +33,8 @@ urlpatterns = [
     path("documents/", include(wagtaildocs_urls)),
     path("search/", search_views.search, name="search"),
     path("api/", include(api.urls)),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]
 
 

@@ -1,6 +1,6 @@
 from wagtail.contrib.modeladmin.options import ModelAdmin, modeladmin_register, ModelAdminGroup
 
-from home.models import Activity, Inspiration, HealthAssessment, HealthQuestion, MentalHealthResource
+from home.models import Activity, Inspiration, MentalHealthResource, HealthAssessment
 
 
 class ActivityAdmin(ModelAdmin):
@@ -31,19 +31,9 @@ class HealthAssessmentAdmin(ModelAdmin):
     menu_icon = "form"
     add_to_settings_menu = False
     exclude_from_explorer = False
-    list_display = ("title", "num_questions")
+    list_display = ("title",)
     empty_value_display = 'N/A'
     search_fields = ("title",)
-
-
-class HealthQuestionAdmin(ModelAdmin):
-    model = HealthQuestion
-    menu_label = "Health Question"
-    menu_icon = "list-ul"
-    add_to_settings_menu = False
-    exclude_from_explorer = False
-    list_display = ("assessment", "question")
-    empty_value_display = 'N/A'
 
 
 class MentalHealthResourceAdmin(ModelAdmin):
@@ -52,12 +42,11 @@ class MentalHealthResourceAdmin(ModelAdmin):
     menu_icon = "plus"
     add_to_settings_menu = False
     exclude_from_explorer = False
-    list_display = ("title", "resource_type")
+    list_display = ("title",)
     empty_value_display = 'N/A'
 
 
 modeladmin_register(ActivityAdmin)
 modeladmin_register(InspirationAdmin)
 modeladmin_register(HealthAssessmentAdmin)
-modeladmin_register(HealthQuestionAdmin)
 modeladmin_register(MentalHealthResourceAdmin)
