@@ -1,11 +1,15 @@
 version: 1.0
 runtime: python3
-entrypoint: python manage.py runserver 0.0.0.0:8000
 
 build:
-  source_location: https://github.com/bilal-mustafa10/mindmate-dashboard.git
-  source_type: git
-  environment:
+  commands:
+    build:
+      - pip install pipenv
+      - pipenv install
+    post-build:
+      - python manage.py collectstatic --noinput
+      - python manage.py migrate
+  env:
     - name: DJANGO_SETTINGS_MODULE
       value: mindmateDashboard.settings.dev
     - name: AWS_SECRET_ACCESS_KEY
@@ -14,10 +18,17 @@ build:
       value_from_secret: arn:aws:secretsmanager:eu-west-1:934032727132:secret:dev/mindmate/s3-AvdIc0::aws_access_key_id
     - name: AWS_DEFAULT_REGION
       value: eu-west-2
-  commands:
-    - pip install -r requirements.txt
-    - python manage.py collectstatic --noinput
-    - python manage.py migrate
 
-ports:
-  - 8000/tcp
+run:
+  runtime-version: 3.9
+  command: pipenv run gunicorn mindmateDashboard.wsgi --log-file -
+  network:
+    port: 8000
+    env: MY_APP_PORT
+  env:
+    - name: DJANGO_SETTINGS_MODULE
+      value: mindmateDashboard.settings.dev
+    - name: AWS_SECRET_ACCESS_KEY
+      value_from_secret: arn:aws:secretsmanager:eu-west-1:934032727132:secret:dev/mindmate/s3-AvdIc0::aws_secret_access_key
+    - name: AWS_ACCESS_KEY_ID
+      value_from_secret: arn:aws:secretsmanager:eu-west-1:934032727132:secret:dev/mindmate/s3-AvdIc0::aws_access_key_id
