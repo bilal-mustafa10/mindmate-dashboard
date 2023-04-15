@@ -1,5 +1,5 @@
 version: 1.0
-runtime: python3.8
+runtime: python3
 entrypoint: python manage.py runserver 0.0.0.0:8000
 
 build:
